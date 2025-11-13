@@ -1,9 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+/// @title NovaDecider Interface
+/// @notice Interface for the deployed NovaDecider verifier contract
+interface INovaDecider {
+    function verifyOpaqueNovaProof(uint256[28] calldata proof) external view returns (bool);
+}
+
 /// @title Tokenized Fund Manager with Zero-Knowledge Proofs
 /// @notice Manages tokenized RWA fund with privacy-preserving compliance proofs
-/// @dev Uses Arecibo/Nova ZK proofs for fund policy enforcement
+/// @dev Uses Nova/Sonobe ZK proofs for fund policy enforcement
 contract TokenizedFundManager {
     /*//////////////////////////////////////////////////////////////
                                  ERRORS
@@ -46,6 +52,9 @@ contract TokenizedFundManager {
     /// Fund admin
     address public immutable admin;
 
+    /// NovaDecider verifier contract
+    INovaDecider public immutable novaVerifier;
+
     /// Audit trail
     struct Transaction {
         bytes32 txHash;
@@ -64,10 +73,11 @@ contract TokenizedFundManager {
                               CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
 
-    constructor(address _agent, bytes32 _whitelistRoot) {
+    constructor(address _agent, bytes32 _whitelistRoot, address _novaVerifier) {
         admin = msg.sender;
         authorizedAgents[_agent] = true;
         assetWhitelistRoot = _whitelistRoot;
+        novaVerifier = INovaDecider(_novaVerifier);
 
         emit AgentAuthorized(_agent, true);
     }
@@ -180,18 +190,35 @@ contract TokenizedFundManager {
         // );
     }
 
-    /// @notice Verify liquidity reserve proof
-    /// @dev In production, calls Arecibo verifier contract
+    /// @notice Verify liquidity reserve proof using NovaDecider
+    /// @dev Calls the deployed NovaDecider verifier contract
     function _verifyLiquidity(bytes memory proof) internal view {
         if (proof.length == 0) {
             revert ProofVerificationFailed();
         }
 
-        // Mock verification - in production:
-        // require(
-        //     ILiquidityVerifier(verifierAddress).verify(proof, MIN_LIQUIDITY),
-        //     "Insufficient liquidity"
-        // );
+        // For Nova proofs, we expect exactly 28 uint256 values (900 bytes when ABI-encoded)
+        // The proof should be pre-formatted as uint256[28]
+        if (proof.length != 28 * 32) {
+            revert InvalidProof();
+        }
+
+        // Decode the proof as uint256[28]
+        uint256[28] memory novaProof;
+        assembly {
+            // Load 28 words from proof memory (skip first 32 bytes which is length)
+            let proofPtr := add(proof, 0x20)
+            for { let i := 0 } lt(i, 28) { i := add(i, 1) } {
+                mstore(add(novaProof, mul(i, 0x20)), mload(add(proofPtr, mul(i, 0x20))))
+            }
+        }
+
+        // Call NovaDecider verifier
+        bool verified = novaVerifier.verifyOpaqueNovaProof(novaProof);
+
+        if (!verified) {
+            revert ProofVerificationFailed();
+        }
     }
 
     /// @notice Verify asset whitelist proof

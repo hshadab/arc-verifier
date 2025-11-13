@@ -15,12 +15,20 @@ contract DeployFundManager is Script {
         // Example whitelist root (mock for now)
         bytes32 whitelistRoot = keccak256("arc_approved_assets_v1");
 
+        // NovaDecider verifier address (deployed on Arc testnet)
+        // Use environment variable if provided, otherwise use testnet address
+        address novaVerifier = vm.envOr(
+            "NOVA_VERIFIER_ADDRESS",
+            address(0x076E915833620074669Eccd70aD8836EfA143A7B)
+        );
+
         vm.startBroadcast(deployerPrivateKey);
 
         // Deploy TokenizedFundManager
         TokenizedFundManager fundManager = new TokenizedFundManager(
             initialAgent,
-            whitelistRoot
+            whitelistRoot,
+            novaVerifier
         );
 
         console.log("===========================================");
@@ -33,6 +41,7 @@ contract DeployFundManager is Script {
         console.log("Max position:", fundManager.MAX_SINGLE_POSITION(), "%");
         console.log("Min liquidity:", fundManager.MIN_LIQUIDITY(), "%");
         console.log("Whitelist root:", vm.toString(whitelistRoot));
+        console.log("Nova verifier:", address(fundManager.novaVerifier()));
         console.log("===========================================");
 
         vm.stopBroadcast();
