@@ -1,0 +1,21 @@
+[package]
+name = "arc-fund-circuits"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+arecibo = { path = "../arecibo" }
+bellpepper-core = "0.4.0"
+ff = "0.13"
+pasta_curves = "0.5"
+halo2curves = "0.7"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rand = "0.8"
+
+[dev-dependencies]
+criterion = "0.5"
+
+[features]
+# Enable Solidity verifier generation
+solidity = ["arecibo/solidity"]
