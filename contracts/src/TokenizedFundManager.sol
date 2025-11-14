@@ -52,7 +52,7 @@ contract TokenizedFundManager {
     /// Fund admin
     address public immutable admin;
 
-    /// NovaDecider verifier contract
+    /// NovaDecider verifier contract (single folded proof)
     INovaDecider public immutable novaVerifier;
 
     /// Audit trail
@@ -73,7 +73,11 @@ contract TokenizedFundManager {
                               CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
 
-    constructor(address _agent, bytes32 _whitelistRoot, address _novaVerifier) {
+    constructor(
+        address _agent,
+        bytes32 _whitelistRoot,
+        address _novaVerifier
+    ) {
         admin = msg.sender;
         authorizedAgents[_agent] = true;
         assetWhitelistRoot = _whitelistRoot;
@@ -101,11 +105,11 @@ contract TokenizedFundManager {
     //////////////////////////////////////////////////////////////*/
 
     /// @notice Execute a fund rebalancing with ZK proof verification
-    /// @param proofBundle Bundled ZK proofs for all compliance checks
+    /// @param foldedProof Single folded Nova proof attesting to all compliance checks
     /// @param metadata Encrypted transaction metadata
     /// @return success Whether the rebalancing was executed
     function executeRebalance(
-        bytes calldata proofBundle,
+        bytes calldata foldedProof,
         bytes calldata metadata
     ) external onlyAgent returns (bool success) {
         // Update daily tracking
@@ -116,17 +120,8 @@ contract TokenizedFundManager {
             revert PolicyViolation("Daily rebalance limit exceeded");
         }
 
-        // Decode proof bundle
-        (
-            bytes memory positionLimitProof,
-            bytes memory liquidityProof,
-            bytes memory whitelistProof
-        ) = abi.decode(proofBundle, (bytes, bytes, bytes));
-
-        // Verify all compliance proofs
-        _verifyPositionLimit(positionLimitProof);
-        _verifyLiquidity(liquidityProof);
-        _verifyWhitelist(whitelistProof);
+        // Verify folded proof once (all constraints folded together)
+        _verifyFoldedProof(foldedProof);
 
         // If all proofs valid, record the transaction
         bytes32 txHash = keccak256(
@@ -137,13 +132,13 @@ contract TokenizedFundManager {
             Transaction({
                 txHash: txHash,
                 timestamp: block.timestamp,
-                proofCommitment: keccak256(proofBundle)
+                proofCommitment: keccak256(foldedProof)
             })
         );
 
         dailyRebalanceCount++;
 
-        emit RebalanceExecuted(txHash, block.timestamp, keccak256(proofBundle));
+        emit RebalanceExecuted(txHash, block.timestamp, keccak256(foldedProof));
 
         return true;
     }
@@ -174,25 +169,9 @@ contract TokenizedFundManager {
                           PROOF VERIFICATION
     //////////////////////////////////////////////////////////////*/
 
-    /// @notice Verify position limit proof
-    /// @dev In production, calls Arecibo verifier contract
-    function _verifyPositionLimit(bytes memory proof) internal view {
-        // TODO: Call actual Arecibo verifier
-        // For now, just check proof is not empty
-        if (proof.length == 0) {
-            revert ProofVerificationFailed();
-        }
-
-        // Mock verification - in production, this would be:
-        // require(
-        //     IPositionLimitVerifier(verifierAddress).verify(proof, MAX_SINGLE_POSITION),
-        //     "Position limit violated"
-        // );
-    }
-
-    /// @notice Verify liquidity reserve proof using NovaDecider
-    /// @dev Calls the deployed NovaDecider verifier contract
-    function _verifyLiquidity(bytes memory proof) internal view {
+    /// @notice Verify folded Nova proof (all constraints)
+    /// @dev Calls the deployed NovaDecider verifier contract once
+    function _verifyFoldedProof(bytes memory proof) internal view {
         if (proof.length == 0) {
             revert ProofVerificationFailed();
         }
@@ -203,36 +182,13 @@ contract TokenizedFundManager {
             revert InvalidProof();
         }
 
-        // Decode the proof as uint256[28]
-        uint256[28] memory novaProof;
-        assembly {
-            // Load 28 words from proof memory (skip first 32 bytes which is length)
-            let proofPtr := add(proof, 0x20)
-            for { let i := 0 } lt(i, 28) { i := add(i, 1) } {
-                mstore(add(novaProof, mul(i, 0x20)), mload(add(proofPtr, mul(i, 0x20))))
-            }
-        }
-
-        // Call NovaDecider verifier
+        // Decode and verify
+        uint256[28] memory novaProof = abi.decode(proof, (uint256[28]));
         bool verified = novaVerifier.verifyOpaqueNovaProof(novaProof);
 
         if (!verified) {
             revert ProofVerificationFailed();
         }
-    }
-
-    /// @notice Verify asset whitelist proof
-    /// @dev In production, calls Arecibo verifier contract
-    function _verifyWhitelist(bytes memory proof) internal view {
-        if (proof.length == 0) {
-            revert ProofVerificationFailed();
-        }
-
-        // Mock verification - in production:
-        // require(
-        //     IWhitelistVerifier(verifierAddress).verify(proof, assetWhitelistRoot),
-        //     "Asset not whitelisted"
-        // );
     }
 
     /*//////////////////////////////////////////////////////////////

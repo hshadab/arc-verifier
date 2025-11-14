@@ -19,3 +19,5 @@ criterion = "0.5"
 [features]
 # Enable Solidity verifier generation
 solidity = ["arecibo/solidity"]
+# Optional Poseidon-based Merkle hashing (not yet wired)
+poseidon = []

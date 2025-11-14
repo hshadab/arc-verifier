@@ -9,6 +9,8 @@ use arecibo::{
 };
 use ff::Field;
 use halo2curves::bn256::Fr;
+use arecibo::frontend::gadgets::poseidon::{circuit2::poseidon_hash_allocated, poseidon_inner::PoseidonConstants};
+use generic_array::typenum::U2;
 
 /// Liquidity Reserve Circuit (BN254 version)
 ///
@@ -146,6 +148,80 @@ impl NovaPositionLimitCircuit {
             total_value,
         }
     }
+}
+
+/// Whitelist Circuit (BN254 version)
+///
+/// Proves that an asset hash is included in a Merkle tree with Poseidon hashing.
+/// Uses a fixed-depth tree for demo purposes.
+#[derive(Clone, Debug)]
+pub struct NovaWhitelistCircuit {
+    /// Merkle root (public parameter passed in via calldata off-circuit)
+    pub merkle_root: u64,
+    /// Asset leaf value
+    pub asset_hash: u64,
+    /// Sibling nodes along the path (fixed depth)
+    pub siblings: Vec<u64>,
+    /// Path indices: true if current node is right child
+    pub is_right: Vec<bool>,
+}
+
+impl NovaWhitelistCircuit {
+    pub fn new(merkle_root: u64, asset_hash: u64, siblings: Vec<u64>, is_right: Vec<bool>) -> Self {
+        assert_eq!(siblings.len(), is_right.len());
+        Self { merkle_root, asset_hash, siblings, is_right }
+    }
+}
+
+impl StepCircuit<Fr> for NovaWhitelistCircuit {
+    fn arity(&self) -> usize { 1 }
+
+    fn synthesize<CS: ConstraintSystem<Fr>>(
+        &self,
+        cs: &mut CS,
+        z_in: &[AllocatedNum<Fr>],
+    ) -> Result<Vec<AllocatedNum<Fr>>, SynthesisError> {
+        // Counter
+        let counter = z_in[0].clone();
+
+        // Allocate leaf
+        let mut current = AllocatedNum::alloc(cs.namespace(|| "leaf"), || Ok(Fr::from(self.asset_hash)))?;
+        let mut constants: PoseidonConstants<Fr, U2> = PoseidonConstants::new();
+
+        // Recompute root by walking up
+        for (i, (sib, right)) in self.siblings.iter().copied().zip(self.is_right.iter().copied()).enumerate() {
+            let sibling = AllocatedNum::alloc(cs.namespace(|| format!("sibling_{}", i)), || Ok(Fr::from(sib)))?;
+            let (left, rightv) = if right {
+                (sibling.clone(), current.clone())
+            } else {
+                (current.clone(), sibling.clone())
+            };
+
+            // Poseidon hash(left, right) -> parent
+            let parent = poseidon_hash_allocated::<_, _, U2>(
+                cs.namespace(|| format!("poseidon_{}", i)),
+                vec![left, rightv],
+                &constants,
+            )?;
+            current = parent;
+        }
+
+        // Enforce: computed root equals provided root
+        let root = AllocatedNum::alloc(cs.namespace(|| "merkle_root"), || Ok(Fr::from(self.merkle_root)))?;
+        cs.enforce(
+            || "root_match",
+            |lc| lc + current.get_variable(),
+            |lc| lc + CS::one(),
+            |lc| lc + root.get_variable(),
+        );
+
+        // Increment counter
+        let one = AllocatedNum::alloc(cs.namespace(|| "one"), || Ok(Fr::one()))?;
+        let new_counter = counter.add(cs.namespace(|| "increment"), &one)?;
+        Ok(vec![new_counter])
+    }
+
+    fn non_deterministic_advice(&self) -> Vec<Fr> { vec![] }
 }
 
 impl StepCircuit<Fr> for NovaPositionLimitCircuit {

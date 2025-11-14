@@ -1,15 +1,18 @@
 export default function ContractsSection() {
+  const NOVA = process.env.NEXT_PUBLIC_NOVA_VERIFIER || '0x076E915833620074669Eccd70aD8836EfA143A7B'
+  const FUND = process.env.NEXT_PUBLIC_FUND_MANAGER || '0xaAdc1327a66D992F3d8E6fBa57F6BE7e810d80DE'
+
   const contracts = [
     {
       name: 'NovaDecider Verifier',
-      address: '0x076E915833620074669Eccd70aD8836EfA143A7B',
+      address: NOVA,
       description: 'Auto-generated Solidity verifier for Nova proofs',
       features: ['KZG10 commitments', 'Groth16 compression', '795K gas per verification'],
       status: 'deployed',
     },
     {
       name: 'TokenizedFundManager',
-      address: '0xaAdc1327a66D992F3d8E6fBa57F6BE7e810d80DE',
+      address: FUND,
       description: 'Fund compliance manager with integrated verifier',
       features: ['Daily rebalance limits', 'Audit trail', 'Multi-circuit support'],
       status: 'deployed',
@@ -67,7 +70,7 @@ export default function ContractsSection() {
               </div>
 
               <a
-                href={`https://testnet.arcscan.app/address/${contract.address}`}
+                href={`${process.env.NEXT_PUBLIC_EXPLORER_URL || 'https://testnet.arcscan.app'}/address/${contract.address}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block w-full text-center px-4 py-2 rounded-lg glass-effect hover:glow-effect transition-all"

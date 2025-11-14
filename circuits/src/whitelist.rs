@@ -70,8 +70,11 @@ impl<F: PrimeField> WhitelistCircuit<F> {
     }
 }
 
-/// Simple hash function for Merkle tree (using addition for simplicity)
-/// In production, use a proper hash function like Poseidon
+// Merkle hash function used by the circuit
+// Default (no feature): simple addition-based hash for demo/testing
+// Feature `poseidon`: placeholder for Poseidon gadget wiring
+
+#[cfg(not(feature = "poseidon"))]
 fn merkle_hash<F: PrimeField, CS: ConstraintSystem<F>>(
     mut cs: CS,
     left: bellpepper_core::Variable,
@@ -79,10 +82,8 @@ fn merkle_hash<F: PrimeField, CS: ConstraintSystem<F>>(
     left_val: Option<F>,
     right_val: Option<F>,
 ) -> Result<bellpepper_core::Variable, SynthesisError> {
-    // Simple hash: hash(left, right) = left + right
-    // In production, use a cryptographic hash function like Poseidon
     let hash = cs.alloc(
-        || "merkle_hash",
+        || "merkle_hash_addition",
         || {
             let l = left_val.ok_or(SynthesisError::AssignmentMissing)?;
             let r = right_val.ok_or(SynthesisError::AssignmentMissing)?;
@@ -98,6 +99,19 @@ fn merkle_hash<F: PrimeField, CS: ConstraintSystem<F>>(
     );
 
     Ok(hash)
+}
+
+#[cfg(feature = "poseidon")]
+fn merkle_hash<F: PrimeField, CS: ConstraintSystem<F>>(
+    _cs: CS,
+    _left: bellpepper_core::Variable,
+    _right: bellpepper_core::Variable,
+    _left_val: Option<F>,
+    _right_val: Option<F>,
+) -> Result<bellpepper_core::Variable, SynthesisError> {
+    // Placeholder: Poseidon gadget not wired in this crate yet.
+    // Implement using a bellpepper-compatible Poseidon gadget or bridge.
+    Err(SynthesisError::Unsatisfiable)
 }
 
 impl<F: PrimeField> Circuit<F> for WhitelistCircuit<F> {

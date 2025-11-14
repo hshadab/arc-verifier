@@ -29,11 +29,13 @@ contract TokenizedFundManagerTest is Test {
         agent = address(0x1);
         whitelistRoot = keccak256("mock_whitelist_root");
 
-        // Deploy mock verifier
+        // Deploy mock verifier and fund manager (single folded proof)
         mockVerifier = new MockNovaDecider();
-
-        // Deploy fund manager with mock verifier
-        fundManager = new TokenizedFundManager(agent, whitelistRoot, address(mockVerifier));
+        fundManager = new TokenizedFundManager(
+            agent,
+            whitelistRoot,
+            address(mockVerifier)
+        );
     }
 
     function testInitialSetup() public {
@@ -51,23 +53,12 @@ contract TokenizedFundManagerTest is Test {
     function testExecuteRebalanceWithMockProofs() public {
         vm.prank(agent);
 
-        // Create mock proofs (non-empty)
-        bytes memory positionProof = abi.encode("mock_position_proof");
-
-        // Liquidity proof must be exactly 28 * 32 = 896 bytes (28 uint256 values)
-        uint256[28] memory mockNovaProof;
+        // Create folded proof (28 * 32 bytes, encoded as uint256[28])
+        uint256[28] memory folded;
         for (uint256 i = 0; i < 28; i++) {
-            mockNovaProof[i] = i + 1; // Fill with dummy values
+            folded[i] = i + 1;
         }
-        bytes memory liquidityProof = abi.encode(mockNovaProof);
-
-        bytes memory whitelistProof = abi.encode("mock_whitelist_proof");
-
-        bytes memory proofBundle = abi.encode(
-            positionProof,
-            liquidityProof,
-            whitelistProof
-        );
+        bytes memory proofBundle = abi.encode(folded);
 
         bytes memory metadata = abi.encode("encrypted_transaction_data");
 
@@ -81,7 +72,7 @@ contract TokenizedFundManagerTest is Test {
         address unauthorizedAgent = address(0x2);
         vm.prank(unauthorizedAgent);
 
-        bytes memory proofBundle = abi.encode("", "", "");
+        bytes memory proofBundle = new bytes(0);
         bytes memory metadata = abi.encode("data");
 
         vm.expectRevert(TokenizedFundManager.Unauthorized.selector);
@@ -101,7 +92,7 @@ contract TokenizedFundManagerTest is Test {
     function testEmptyProofFails() public {
         vm.prank(agent);
 
-        bytes memory proofBundle = abi.encode("", "", ""); // Empty proofs
+        bytes memory proofBundle = new bytes(0); // Empty folded proof
         bytes memory metadata = abi.encode("data");
 
         vm.expectRevert(TokenizedFundManager.ProofVerificationFailed.selector);
@@ -111,19 +102,14 @@ contract TokenizedFundManagerTest is Test {
     function testComplianceReport() public {
         vm.startPrank(agent);
 
-        // Execute multiple rebalances with valid Nova proof format
+        // Execute multiple rebalances with valid folded proof
         for (uint256 i = 0; i < 3; i++) {
-            uint256[28] memory mockNovaProof;
+            uint256[28] memory folded2;
             for (uint256 j = 0; j < 28; j++) {
-                mockNovaProof[j] = i * 28 + j; // Unique values per iteration
+                folded2[j] = 100 + i * 28 + j;
             }
-
-            bytes memory proofBundle = abi.encode(
-                abi.encode("proof1"),
-                abi.encode(mockNovaProof),
-                abi.encode("proof3")
-            );
-            fundManager.executeRebalance(proofBundle, abi.encode("metadata", i));
+            bytes memory proofBundle2 = abi.encode(folded2);
+            fundManager.executeRebalance(proofBundle2, abi.encode("metadata", i));
         }
 
         vm.stopPrank();
@@ -136,17 +122,12 @@ contract TokenizedFundManagerTest is Test {
     function testDailyRebalanceLimit() public {
         vm.startPrank(agent);
 
-        // Create valid proof bundle
-        uint256[28] memory mockNovaProof;
+        // Create valid folded proof
+        uint256[28] memory folded3;
         for (uint256 i = 0; i < 28; i++) {
-            mockNovaProof[i] = i + 1;
+            folded3[i] = i + 1;
         }
-
-        bytes memory proofBundle = abi.encode(
-            abi.encode("proof1"),
-            abi.encode(mockNovaProof),
-            abi.encode("proof3")
-        );
+        bytes memory proofBundle = abi.encode(folded3);
 
         // Execute up to limit
         for (uint256 i = 0; i < 10; i++) {
@@ -166,17 +147,13 @@ contract TokenizedFundManagerTest is Test {
     }
 
     function testNovaVerifierIntegration() public {
-        // Create proof bundle with valid Nova proof format
+        // Create folded proof with valid Nova proof format (28 uint256 values)
         uint256[28] memory validNovaProof;
         for (uint256 i = 0; i < 28; i++) {
             validNovaProof[i] = i + 100; // Dummy values
         }
 
-        bytes memory proofBundle = abi.encode(
-            abi.encode("position_proof"),
-            abi.encode(validNovaProof),
-            abi.encode("whitelist_proof")
-        );
+        bytes memory proofBundle = abi.encode(validNovaProof);
 
         // Should succeed with mock verifier returning true
         vm.prank(agent);
@@ -192,20 +169,18 @@ contract TokenizedFundManagerTest is Test {
         fundManager.executeRebalance(proofBundle, abi.encode("metadata2"));
     }
 
+    // Position/Whitelist verifier integration now folded into a single proof path
+
     function testInvalidNovaProofLength() public {
         vm.prank(agent);
 
-        // Create proof bundle with INVALID Nova proof (wrong size)
-        bytes memory invalidLiquidityProof = abi.encode("wrong_size_proof"); // Too small
-
-        bytes memory proofBundle = abi.encode(
-            abi.encode("position_proof"),
-            invalidLiquidityProof,
-            abi.encode("whitelist_proof")
-        );
+        // Create folded proof with INVALID size
+        bytes memory proofBundle = abi.encode("wrong_size_proof"); // Too small
 
         // Should revert with InvalidProof because size is wrong
         vm.expectRevert(TokenizedFundManager.InvalidProof.selector);
         fundManager.executeRebalance(proofBundle, abi.encode("metadata"));
     }
+
+    // Invalid length for folded proof already tested above
 }

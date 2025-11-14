@@ -195,7 +195,7 @@ export default function DemoSection({ proofStatus, setProofStatus }: Props) {
                   <div className="w-6 h-6 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
                   <span className="text-lg font-medium text-green-400">Verifying on Arc testnet...</span>
                 </div>
-                <div className="text-sm text-gray-400">NovaDecider contract @ 0x076...A7B</div>
+                <div className="text-sm text-gray-400">NovaDecider contract @ {(process.env.NEXT_PUBLIC_NOVA_VERIFIER || '0x076E915833620074669Eccd70aD8836EfA143A7B').slice(0,6)}...{(process.env.NEXT_PUBLIC_NOVA_VERIFIER || '0x076E915833620074669Eccd70aD8836EfA143A7B').slice(-3)}</div>
               </div>
             )}
 
@@ -206,7 +206,7 @@ export default function DemoSection({ proofStatus, setProofStatus }: Props) {
                 <div className="text-gray-400">Compliance confirmed on Arc testnet</div>
                 <div className="flex items-center justify-center gap-4 mt-6">
                   <a
-                    href="https://testnet.arcscan.app/address/0x076E915833620074669Eccd70aD8836EfA143A7B"
+                    href={`${process.env.NEXT_PUBLIC_EXPLORER_URL || 'https://testnet.arcscan.app'}/address/${process.env.NEXT_PUBLIC_NOVA_VERIFIER || '0x076E915833620074669Eccd70aD8836EfA143A7B'}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-6 py-2 rounded-lg glass-effect hover:glow-effect transition-all"
