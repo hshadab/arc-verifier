@@ -41,16 +41,18 @@ class ComplianceService {
 
     return new Promise((resolve, reject) => {
       const sonobePath = path.join(process.cwd(), '..', 'sonobe');
+      const binaryPath = path.join(sonobePath, 'target', 'release', 'examples', 'compliance_groth16_stdio');
 
       console.log('🚀 Starting Rust compliance service...');
+      console.log('Binary path:', binaryPath);
       console.log('Working directory:', sonobePath);
 
       this.initResolve = resolve;
       this.initReject = reject;
 
       this.process = spawn(
-        'cargo',
-        ['run', '--release', '-p', 'folding-schemes', '--example', 'compliance_groth16_stdio'],
+        binaryPath,
+        [],
         {
           cwd: sonobePath,
           stdio: ['pipe', 'pipe', 'pipe'],

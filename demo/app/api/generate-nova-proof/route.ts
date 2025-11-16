@@ -77,18 +77,12 @@ export async function POST(request: NextRequest) {
         })
 
         const sonobePath = path.join(process.cwd(), '..', 'sonobe')
+        const binaryPath = path.join(sonobePath, 'target', 'release', 'examples', 'compliance_nova_stdio')
 
-        // Spawn the Nova stdio service
+        // Spawn the pre-compiled Nova binary (not cargo run, since cargo isn't available at runtime on Render)
         const rustProcess = spawn(
-          'cargo',
-          [
-            'run',
-            '--release',
-            '-p',
-            'folding-schemes',
-            '--example',
-            'compliance_nova_stdio'
-          ],
+          binaryPath,
+          [],
           {
             cwd: sonobePath,
             stdio: ['pipe', 'pipe', 'pipe'],
