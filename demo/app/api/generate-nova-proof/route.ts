@@ -70,6 +70,20 @@ export async function POST(request: NextRequest) {
       }
 
       try {
+        // On Render.com, skip live proof generation and use cached proof
+        // Decider compression requires 16GB+ RAM and takes 10+ minutes on 8GB instances
+        const isRender = process.env.RENDER === 'true' || process.env.RENDER_SERVICE_NAME
+
+        if (isRender) {
+          sendEvent({
+            type: 'progress',
+            message: 'Using cached Nova proof (Render environment detected)...',
+            timestamp: Date.now()
+          })
+          await fallbackComplete()
+          return
+        }
+
         sendEvent({
           type: 'progress',
           message: 'Starting Nova folding prover...',
