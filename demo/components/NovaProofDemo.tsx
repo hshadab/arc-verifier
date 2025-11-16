@@ -111,8 +111,8 @@ export default function NovaProofDemo() {
             <div>
               <h3 className="text-2xl font-bold mb-4">Proof Generator</h3>
               <p className="text-gray-400 mb-6">
-                Click below to generate a complete Nova proof with recursive folding and Groth16 compression.
-                This typically takes 60-75 seconds.
+                Click below to see a real Nova proof with recursive folding and Groth16 compression.
+                On Render.com, this uses a pre-generated cached proof (instant). Local development generates live proofs (60-75s).
               </p>
 
               <button
@@ -138,23 +138,22 @@ export default function NovaProofDemo() {
 
               {/* Expected Timeline */}
               <div className="mt-6 p-4 rounded-lg bg-arc-darker/50 border border-gray-700">
-                <div className="text-sm font-semibold text-gray-300 mb-3">Expected Timeline:</div>
+                <div className="text-sm font-semibold text-gray-300 mb-3">Deployment Info:</div>
                 <div className="space-y-2 text-sm text-gray-400">
                   <div className="flex justify-between">
-                    <span>📦 Parameter Loading</span>
-                    <span className="font-mono">~58s</span>
+                    <span>🌐 Render.com (Demo)</span>
+                    <span className="font-mono text-green-400">Instant</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>🔄 Nova Folding (3 steps)</span>
-                    <span className="font-mono">~2-3s</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>🗜️ Groth16 Compression</span>
-                    <span className="font-mono">~50-70s</span>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-700 pt-2 mt-2 font-semibold text-purple-400">
-                    <span>Total (first request)</span>
+                    <span>💻 Local Development</span>
                     <span className="font-mono">~60-75s</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>🏢 Production (16GB+)</span>
+                    <span className="font-mono">~60-75s</span>
+                  </div>
+                  <div className="pt-2 mt-2 border-t border-gray-700 text-xs text-gray-500">
+                    Render uses cached proof due to 8GB RAM limit. Real proof generation requires 16GB+ for Decider compression.
                   </div>
                 </div>
               </div>
