@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
 
       const sendEvent = (event: NovaEvent) => {
         console.log('Nova SSE event:', event)
-        const data = `data: ${JSON.stringify(event)}\\n\\n`
+        const data = `data: ${JSON.stringify(event)}\n\n`
         controller.enqueue(encoder.encode(data))
       }
 
