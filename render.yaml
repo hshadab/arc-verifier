@@ -12,7 +12,7 @@ services:
       cargo build --release -p folding-schemes --example compliance_nova_stdio
       cargo build --release -p folding-schemes --example compliance_groth16_stdio
       cd ../demo
-      npm install
+      npm ci
       npm run build
     startCommand: cd demo && npm start
     envVars:
