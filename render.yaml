@@ -49,9 +49,3 @@ EOF
 
     # Health check endpoint
     healthCheckPath: /
-
-    # Disk storage for parameter files (~100MB)
-    disk:
-      name: nova-params
-      mountPath: /opt/render/project/src/sonobe/persisted_params
-      sizeGB: 1
