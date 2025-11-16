@@ -2,50 +2,26 @@ services:
   - type: web
     name: arc-nova-demo
     runtime: node
-    plan: pro  # 8GB RAM, 4 vCPUs - required for Decider proof
-    region: oregon  # Choose region closest to your users
-
-    # Build from root directory
+    plan: pro
+    region: oregon
     buildCommand: |
-      # Install Rust
       curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       source $HOME/.cargo/env
       rustup default stable
-
-      # Build Rust binaries in release mode
       cd sonobe
       cargo build --release -p folding-schemes --example compliance_nova_stdio
       cargo build --release -p folding-schemes --example compliance_groth16_stdio
-
-      # Check if parameters exist, if not generate them
-      if [ ! -d "persisted_params" ]; then
-        echo "Generating parameters (first deploy only, ~5 minutes)..."
-        timeout 600 cargo run --release -p folding-schemes --example compliance_nova_stdio <<EOF
-exit
-EOF
-      fi
-
-      # Build Next.js app
       cd ../demo
       npm install
       npm run build
-
     startCommand: cd demo && npm start
-
     envVars:
       - key: NODE_ENV
         value: production
-
-      # Resource limits for Decider proof generation
       - key: RAYON_NUM_THREADS
         value: "4"
-
       - key: MALLOC_ARENA_MAX
         value: "2"
-
-      # Next.js configuration
       - key: PORT
         value: "3000"
-
-    # Health check endpoint
     healthCheckPath: /
