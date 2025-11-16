@@ -1,0 +1,50 @@
+# Git
+.git
+.gitignore
+.github
+
+# Node
+node_modules
+npm-debug.log
+.next
+.env.local
+.env.*.local
+
+# Rust
+target
+**/*.rs.bk
+*.pdb
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+/tmp
+
+# Documentation (not needed in production)
+*.md
+!README.md
+
+# Test files
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# Misc
+contracts/cache
+contracts/out
+contracts/broadcast

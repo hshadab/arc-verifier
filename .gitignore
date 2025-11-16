@@ -62,9 +62,14 @@ coverage.json
 *~
 
 # Proof artifacts (large files)
-*.calldata
 *.proof
 *.bson
+
+# IMPORTANT: Allow specific files needed for deployment
+# Cached Nova proof for watchdog fallback (900 bytes)
+!sonobe/composite-proof.calldata
+# Parameter files needed for Nova proof generation (~90MB total)
+!sonobe/persisted_params/*.bin
 
 # OS
 .DS_Store
