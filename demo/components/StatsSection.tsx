@@ -1,28 +1,28 @@
 export default function StatsSection() {
   const stats = [
     {
-      value: '795K',
+      value: '~1M',
       label: 'Gas Per Verification',
-      subtext: 'Only ~$0.016 on Arc',
+      subtext: 'Only ~$0.02 on Arc',
       icon: '⛽',
     },
     {
-      value: '22s',
+      value: '~2-5s',
       label: 'Proof Generation',
-      subtext: 'Off-chain proving time',
+      subtext: 'After initialization',
       icon: '⚡',
     },
     {
-      value: '900B',
+      value: '~128B',
       label: 'Proof Size',
-      subtext: 'Constant, compact',
+      subtext: 'Compact Groth16',
       icon: '📦',
     },
     {
-      value: '1,427x',
-      label: 'Cost Savings',
-      subtext: 'vs Traditional Audits',
-      icon: '💰',
+      value: '3-in-1',
+      label: 'Compliance Checks',
+      subtext: 'All proven together',
+      icon: '✅',
     },
   ]
 

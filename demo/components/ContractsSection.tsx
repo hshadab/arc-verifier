@@ -7,7 +7,7 @@ export default function ContractsSection() {
       name: 'NovaDecider Verifier',
       address: NOVA,
       description: 'Auto-generated Solidity verifier for Nova proofs',
-      features: ['KZG10 commitments', 'Groth16 compression', '795K gas per verification'],
+      features: ['KZG10 commitments', 'Groth16 compression', '796K gas per verification'],
       status: 'deployed',
     },
     {
@@ -99,7 +99,7 @@ export default function ContractsSection() {
                 <li>• Bellpepper (R1CS)</li>
                 <li>• 34,914 constraints</li>
                 <li>• Rust implementation</li>
-                <li>• 22/22 tests passing</li>
+                <li>• 32/32 tests passing</li>
               </ul>
             </div>
             <div>

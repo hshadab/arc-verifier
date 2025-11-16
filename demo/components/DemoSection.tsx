@@ -27,17 +27,17 @@ export default function DemoSection({ proofStatus, setProofStatus }: Props) {
     setProofStatus('generating')
     setCurrentStep(2)
 
-    // Simulate 22s proof generation
+    // Simulate ~22s proof generation (shortened to 5s for demo)
     setTimeout(() => {
       setProofStatus('verifying')
       setCurrentStep(3)
 
-      // Simulate on-chain verification
+      // Simulate on-chain verification (~20ms in reality)
       setTimeout(() => {
         setProofStatus('verified')
         setCurrentStep(4)
       }, 2000)
-    }, 5000) // Shortened for demo
+    }, 5000)
   }
 
   return (
@@ -133,7 +133,7 @@ export default function DemoSection({ proofStatus, setProofStatus }: Props) {
                   <span className="text-2xl font-bold text-arc-primary">$0.02</span>
                 </div>
                 <div className="text-xs text-gray-400">
-                  795,738 gas • 20ms verification
+                  795,738 gas • ~20ms verification
                 </div>
               </div>
             </div>
