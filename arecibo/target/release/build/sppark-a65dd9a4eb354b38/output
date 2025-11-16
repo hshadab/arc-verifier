@@ -1,0 +1,7 @@
+cargo:rerun-if-changed=/home/hshadab/.cargo/git/checkouts/sppark-9dc77c97373873f7/96a1199/ec
+cargo:rerun-if-changed=/home/hshadab/.cargo/git/checkouts/sppark-9dc77c97373873f7/96a1199/ff
+cargo:rerun-if-changed=/home/hshadab/.cargo/git/checkouts/sppark-9dc77c97373873f7/96a1199/ntt
+cargo:rerun-if-changed=/home/hshadab/.cargo/git/checkouts/sppark-9dc77c97373873f7/96a1199/msm
+cargo:rerun-if-changed=/home/hshadab/.cargo/git/checkouts/sppark-9dc77c97373873f7/96a1199/util
+cargo:ROOT=/home/hshadab/.cargo/git/checkouts/sppark-9dc77c97373873f7/96a1199
+cargo:rerun-if-env-changed=NVCC

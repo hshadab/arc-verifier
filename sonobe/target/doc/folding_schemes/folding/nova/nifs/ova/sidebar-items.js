@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["compute_E"],"struct":["CommittedInstance","NIFS","Witness"]};

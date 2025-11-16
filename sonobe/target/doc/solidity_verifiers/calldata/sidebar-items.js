@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["NovaVerificationMode"],"fn":["get_formatted_calldata","prepare_calldata_for_nova_cyclefold_verifier"]};

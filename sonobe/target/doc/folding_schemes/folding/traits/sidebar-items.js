@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"trait":["CommittedInstanceOps","CommittedInstanceVarOps","Dummy","Inputize","InputizeNonNative","WitnessOps","WitnessVarOps"]};

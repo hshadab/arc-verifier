@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["off_chain","on_chain"],"struct":["EvalGadget","KZGChallengesGadget"],"trait":["DeciderEnabledNIFS"]};

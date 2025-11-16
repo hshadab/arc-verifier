@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["extract_r1cs","extract_w_x"],"mod":["circuits"],"struct":["R1CS"]};

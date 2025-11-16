@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["GPL3_SDPX_IDENTIFIER","MIT_SDPX_IDENTIFIER","PRAGMA_GROTH16_VERIFIER","PRAGMA_KZG10_VERIFIER"],"mod":["g16","kzg","nova_cyclefold"],"trait":["ProtocolVerifierKey"]};

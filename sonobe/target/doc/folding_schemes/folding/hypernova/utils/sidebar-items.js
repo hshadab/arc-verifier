@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["compute_c","compute_g","compute_sigmas_thetas"]};

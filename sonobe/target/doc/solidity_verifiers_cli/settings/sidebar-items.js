@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["ABOUT","LONG_ABOUT"],"enum":["Protocol"],"fn":["get_default_out_path"],"struct":["Cli"]};

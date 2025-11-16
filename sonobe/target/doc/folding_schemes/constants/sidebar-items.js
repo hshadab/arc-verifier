@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["NOVA_N_BITS_RO"]};

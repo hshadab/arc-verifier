@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["g1_to_fq_repr","g2_to_fq_repr"],"struct":["FqWrapper","G1Repr","G2Repr"]};

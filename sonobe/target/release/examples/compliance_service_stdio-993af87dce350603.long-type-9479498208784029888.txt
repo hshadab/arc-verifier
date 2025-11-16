@@ -1,0 +1,1 @@
+CycleFoldCommittedInstance<ark_ec::models::short_weierstrass::group::Projective<ark_bn254::g1::Config>>

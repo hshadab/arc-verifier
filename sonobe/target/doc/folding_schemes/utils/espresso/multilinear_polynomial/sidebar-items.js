@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["evaluate_no_par","fix_variables","scalar_mul"],"struct":["DenseMultilinearExtension"]};

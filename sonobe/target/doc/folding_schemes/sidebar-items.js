@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Error"],"mod":["arith","commitment","constants","folding","frontend","transcript","utils"],"trait":["Curve","Decider","Field","FoldingScheme","MultiFolding"]};

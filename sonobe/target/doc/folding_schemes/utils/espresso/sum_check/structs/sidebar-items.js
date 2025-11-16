@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["IOPProof","IOPProverMessage","IOPProverState","IOPVerifierState"]};

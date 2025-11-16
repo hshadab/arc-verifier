@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_r1cs","get_r1cs_from_cs"],"mod":["circuits","decider","decider_circuits","decider_eth","decider_eth_circuit","nifs","traits","zk"],"struct":["CommittedInstance","IVCProof","Nova","NovaCycleFoldConfig","PreprocessorParam","ProverParams","VerifierParams","Witness"]};
