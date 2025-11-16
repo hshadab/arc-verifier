@@ -20,6 +20,7 @@ export default function NovaProofDemo() {
   const [result, setResult] = useState<any>(null);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
+  const [proofCalldata, setProofCalldata] = useState<string | null>(null);
 
   const handleGenerateNova = async () => {
     setLoading(true);
