@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["compile_solidity","save_solidity"],"struct":["Evm"]};

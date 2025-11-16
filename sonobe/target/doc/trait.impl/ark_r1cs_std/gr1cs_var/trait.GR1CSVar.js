@@ -1,9 +1,0 @@
-(function() {
-    var implementors = Object.fromEntries([["folding_schemes",[["impl&lt;C: <a class=\"trait\" href=\"folding_schemes/trait.Curve.html\" title=\"trait folding_schemes::Curve\">Curve</a>&gt; GR1CSVar&lt;&lt;C as PrimeGroup&gt;::ScalarField&gt; for <a class=\"struct\" href=\"folding_schemes/folding/circuits/nonnative/affine/struct.NonNativeAffineVar.html\" title=\"struct folding_schemes::folding::circuits::nonnative::affine::NonNativeAffineVar\">NonNativeAffineVar</a>&lt;C&gt;"],["impl&lt;C: <a class=\"trait\" href=\"folding_schemes/trait.Curve.html\" title=\"trait folding_schemes::Curve\">Curve</a>, const TYPE: <a class=\"primitive\" href=\"https://doc.rust-lang.org/1.88.0/std/primitive.bool.html\">bool</a>&gt; GR1CSVar&lt;&lt;C as PrimeGroup&gt;::ScalarField&gt; for <a class=\"struct\" href=\"folding_schemes/folding/protogalaxy/struct.CommittedInstanceVar.html\" title=\"struct folding_schemes::folding::protogalaxy::CommittedInstanceVar\">CommittedInstanceVar</a>&lt;C, TYPE&gt;"],["impl&lt;F: PrimeField&gt; GR1CSVar&lt;F&gt; for <a class=\"struct\" href=\"folding_schemes/folding/circuits/nonnative/uint/struct.LimbVar.html\" title=\"struct folding_schemes::folding::circuits::nonnative::uint::LimbVar\">LimbVar</a>&lt;F&gt;"],["impl&lt;F: PrimeField&gt; GR1CSVar&lt;F&gt; for <a class=\"struct\" href=\"folding_schemes/folding/circuits/nonnative/uint/struct.NonNativeUintVar.html\" title=\"struct folding_schemes::folding::circuits::nonnative::uint::NonNativeUintVar\">NonNativeUintVar</a>&lt;F&gt;"]]]]);
-    if (window.register_implementors) {
-        window.register_implementors(implementors);
-    } else {
-        window.pending_implementors = implementors;
-    }
-})()
-//{"start":57,"fragment_lengths":[1475]}

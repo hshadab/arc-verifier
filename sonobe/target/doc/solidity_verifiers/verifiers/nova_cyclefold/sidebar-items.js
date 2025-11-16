@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["get_decider_template_for_cyclefold_decider"],"struct":["NovaCycleFoldDecider","NovaCycleFoldVerifierKey"]};

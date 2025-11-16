@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["AugmentedFCircuit","CCCSVar","LCCCSVar","NIMFSGadget","ProofVar"]};

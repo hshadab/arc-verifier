@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["CycleFoldAugmentationGadget","CycleFoldChallengeGadget","CycleFoldCircuit","CycleFoldCommittedInstanceVar","CycleFoldNIFS","CycleFoldWitnessVar","NIFSFullGadget"],"trait":["CycleFoldConfig"]};

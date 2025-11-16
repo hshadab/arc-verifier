@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["cccs","circuits","decider_eth","decider_eth_circuit","lcccs","nimfs","utils"],"struct":["HyperNova","HyperNovaCycleFoldConfig","IVCProof","ProverParams","VerifierParams","Witness"]};

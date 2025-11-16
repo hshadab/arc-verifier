@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["ccs","r1cs"],"trait":["Arith","ArithRelation","ArithRelationGadget","ArithSampler","ArithSerializer"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["Groth16Verifier","Groth16VerifierKey"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["mova","nova","nova_circuits","ova","ova_circuits","pointvsline"],"trait":["NIFSGadgetTrait","NIFSTrait"]};

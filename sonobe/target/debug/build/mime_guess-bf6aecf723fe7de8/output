@@ -1,1 +1,0 @@
-cargo:rustc-env=MIME_TYPES_GENERATED_PATH=/home/hshadab/arc-verifier/sonobe/target/debug/build/mime_guess-bf6aecf723fe7de8/out/mime_types_generated.rs

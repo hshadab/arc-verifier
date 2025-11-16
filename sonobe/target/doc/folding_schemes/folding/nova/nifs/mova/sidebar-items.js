@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["CommittedInstance","NIFS","Proof","Witness"]};

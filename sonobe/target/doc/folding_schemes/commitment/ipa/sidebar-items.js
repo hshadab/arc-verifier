@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["IPA","IPAGadget","Proof","ProofVar"]};

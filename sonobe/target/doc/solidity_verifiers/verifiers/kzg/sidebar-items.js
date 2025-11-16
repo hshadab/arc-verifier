@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["KZG10Verifier","KZG10VerifierKey"]};

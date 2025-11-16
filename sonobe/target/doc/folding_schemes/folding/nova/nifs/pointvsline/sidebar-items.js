@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["PointVsLine","PointVsLineProof","PointvsLineEvaluationClaim"]};

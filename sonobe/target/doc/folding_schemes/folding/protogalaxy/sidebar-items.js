@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["ProtoGalaxyError"],"mod":["circuits","constants","decider_eth","decider_eth_circuit","folding","traits"],"struct":["CommittedInstance","CommittedInstanceVar","IVCProof","ProtoGalaxy","ProtoGalaxyCycleFoldConfig","ProverParams","VerifierParams","Witness","WitnessVar"]};

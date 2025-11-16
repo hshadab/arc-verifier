@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["compute_lagrange_interpolated_poly"]};

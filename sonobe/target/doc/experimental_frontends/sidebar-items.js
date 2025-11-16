@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["circom","noir","noname","utils"]};

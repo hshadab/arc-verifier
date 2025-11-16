@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["PathOrBin"],"fn":["get_cm_coordinates","powers_of","pp_hash"],"mod":["espresso","gadgets","hypercube","lagrange_poly","mle","vec"]};

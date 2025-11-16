@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["multilinear_polynomial","sum_check","virtual_polynomial"]};

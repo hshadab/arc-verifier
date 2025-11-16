@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["dense_matrix_to_sparse","hadamard","is_zero_vec","mat_from_str_mat","mat_vec_mul","mat_vec_mul_dense","poly_from_vec","vec_add","vec_scalar_mul","vec_sub"],"struct":["SparseMatrix"],"type":["R1CSMatrix"]};

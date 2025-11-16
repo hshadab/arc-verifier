@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["GenericOffchainDeciderCircuit1","GenericOffchainDeciderCircuit2"]};

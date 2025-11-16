@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["cyclefold","decider","nonnative","sum_check","utils"],"type":["CF1","CF2"]};

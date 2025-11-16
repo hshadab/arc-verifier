@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["poseidon"],"trait":["AbsorbNonNative","AbsorbNonNativeGadget","Transcript","TranscriptVar"]};

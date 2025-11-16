@@ -1,1 +1,0 @@
-cargo:rustc-env=MIME_TYPES_GENERATED_PATH=/home/hshadab/arc-verifier/arecibo/target/release/build/mime_guess-6a77decd3f296bd1/out/mime_types_generated.rs

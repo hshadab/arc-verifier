@@ -1,9 +1,0 @@
-(function() {
-    var implementors = Object.fromEntries([["folding_schemes",[["impl&lt;F: PrimeField&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/1.88.0/core/ops/arith/trait.Add.html\" title=\"trait core::ops::arith::Add\">Add</a> for &amp;<a class=\"struct\" href=\"folding_schemes/utils/espresso/virtual_polynomial/struct.VirtualPolynomial.html\" title=\"struct folding_schemes::utils::espresso::virtual_polynomial::VirtualPolynomial\">VirtualPolynomial</a>&lt;F&gt;"]]]]);
-    if (window.register_implementors) {
-        window.register_implementors(implementors);
-    } else {
-        window.pending_implementors = implementors;
-    }
-})()
-//{"start":57,"fragment_lengths":[426]}

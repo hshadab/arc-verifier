@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["lagrange_polys"],"struct":["Folding","ProtoGalaxyAux","ProtoGalaxyProof"]};

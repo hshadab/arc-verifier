@@ -1,5 +1,0 @@
-/home/hshadab/arc-verifier/sonobe/target/debug/deps/darling_macro-38f1394352b0fe7b.d: /home/hshadab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/darling_macro-0.21.3/src/lib.rs
-
-/home/hshadab/arc-verifier/sonobe/target/debug/deps/libdarling_macro-38f1394352b0fe7b.so: /home/hshadab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/darling_macro-0.21.3/src/lib.rs
-
-/home/hshadab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/darling_macro-0.21.3/src/lib.rs:

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["create_or_open_then_write","main"],"mod":["settings"]};
