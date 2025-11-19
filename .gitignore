@@ -1,7 +1,12 @@
 # Sensitive files - DO NOT COMMIT
 .env
 *.env
+!.env.template
+!.env.example
+.env.*
 wallet_info.txt
+WALLET_INFO.txt
+deployment-info.txt
 *.key
 *.pem
 private_key*
