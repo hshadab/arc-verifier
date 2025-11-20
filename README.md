@@ -254,7 +254,43 @@ cast send 0xaAdc1327a66D992F3d8E6fBa57F6BE7e810d80DE "executeRebalance(bytes,byt
 # Tx: 0xf12280a6e83204483c89945638092f2bc83db2cf6f2931f4a11aa240f6fc2ab3
 ```
 
-## ✅ Current Status: PRODUCTION READY
+## Why This Matters
+
+### The Problem
+
+Investment funds face a genuine tension:
+- **Regulators** need to verify compliance with position limits, liquidity requirements, and asset restrictions
+- **Funds** need to protect portfolio allocations from competitors and front-runners
+- **Traditional audits** are expensive, slow, and still reveal sensitive information to auditors
+
+### What This Demo Demonstrates
+
+This project shows that **zero-knowledge proofs can resolve this tension**. Specifically:
+
+1. **Nova folding works for compliance** - Multiple time periods of compliance checks can be compressed into a single proof. A fund could prove 365 days of continuous compliance with one verification call.
+
+2. **On-chain verification is practical** - At ~795k gas ($0.02), verification is cheap enough for real use. This compares favorably to individual Groth16 proofs per compliance check.
+
+3. **The circuit design is sound** - Position limits, liquidity requirements, and asset whitelisting can all be expressed as R1CS constraints and verified together.
+
+4. **EVM integration works** - The full pipeline (Rust prover → Groth16 compression → Solidity verifier) produces valid proofs that verify on Arc testnet.
+
+### What This Doesn't Solve
+
+The demo proves constraint satisfaction on **prover-supplied inputs**. It doesn't bind those inputs to actual on-chain balances. This is the ["data binding problem"](docs/PRODUCTION_CONSIDERATIONS.md) common to all ZK applications. Solutions exist (storage proofs, oracle attestations) but add complexity.
+
+### Who Should Care
+
+- **Protocol developers** building compliance infrastructure on Arc
+- **Fund managers** exploring privacy-preserving regulatory reporting
+- **Researchers** studying practical Nova/IVC applications
+- **Auditors** interested in cryptographic verification methods
+
+This demo provides a foundation. The cryptography works. The economics work. The missing piece is binding proofs to verifiable data sources.
+
+---
+
+## ✅ Current Status
 
 ### ✅ Phase 1: Complete (Circuits & Contracts)
 
@@ -282,17 +318,15 @@ cast send 0xaAdc1327a66D992F3d8E6fBa57F6BE7e810d80DE "executeRebalance(bytes,byt
 
 ### 🎯 What's Achieved
 
-**First working implementation of composite Nova-based fund compliance!**
-
 - 💰 **$0.02 per verification** (795,738 gas) for N time periods
 - ⚡ **20ms on-chain verification** (single call)
 - 🔒 **Zero-knowledge** - Constraints verified without revealing values
 - ✅ **All tests passing** (34/34 tests)
 - 📊 **Real contracts** deployed on Arc testnet
 - 🎨 **Interactive demo** for Arc developers
-- ✨ **True Nova folding** - All constraints verified in one proof
+- ✨ **Nova folding** - Multiple compliance checks verified in one proof
 
-**Note**: This demo proves constraint satisfaction on prover-supplied inputs. See [Production Considerations](docs/PRODUCTION_CONSIDERATIONS.md) for data binding requirements.
+**Limitation**: This demo proves constraint satisfaction on prover-supplied inputs. See [Production Considerations](docs/PRODUCTION_CONSIDERATIONS.md) for data binding requirements.
 
 See [COMPOSITE_CIRCUIT_EXPLAINED.md](COMPOSITE_CIRCUIT_EXPLAINED.md) for complete architecture documentation.
 
