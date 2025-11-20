@@ -4,10 +4,12 @@
 [![Arc Testnet](https://img.shields.io/badge/Arc-Testnet-green)](https://testnet.arcscan.app)
 [![Circuits](https://img.shields.io/badge/Tests-22/22_Passing-success)](circuits/)
 [![Contracts](https://img.shields.io/badge/Tests-12/12_Passing-success)](contracts/)
-[![Integration](https://img.shields.io/badge/Status-Production_Ready-success)](COMPOSITE_CIRCUIT_EXPLAINED.md)
+[![Integration](https://img.shields.io/badge/Status-Demo-blue)](COMPOSITE_CIRCUIT_EXPLAINED.md)
 [![On-Chain](https://img.shields.io/badge/Verification-Live-brightgreen)](TEST_RESULTS.md)
 
-> A production-ready zero-knowledge proof system for privacy-preserving fund compliance on Arc Network with **real Nova folding** that verifies multiple compliance checks in a single on-chain transaction. **First working implementation of composite Nova-based fund compliance!** 🚀
+> A zero-knowledge proof-of-concept demonstrating privacy-preserving fund compliance on Arc Network using **real Nova folding**. This demo verifies that given inputs satisfy compliance constraints - see [Production Considerations](docs/PRODUCTION_CONSIDERATIONS.md) for data binding requirements.
+
+**⚠️ Important**: This demo proves constraint satisfaction on prover-supplied inputs. It does **not** bind those inputs to actual on-chain balances. See [Production Considerations](docs/PRODUCTION_CONSIDERATIONS.md) for what would be needed to use this in production.
 
 ## 🎯 Overview
 
@@ -52,7 +54,7 @@ Our solution uses **Nova folding** to achieve all three:
 
 - **Network**: Arc Testnet (Chain ID: 5042002)
 - **Explorer**: https://testnet.arcscan.app
-- **Status**: ✅ **Production ready** - Complete end-to-end verification working!
+- **Status**: ✅ **Demo deployed** - End-to-end proof generation and verification working
 
 ### Try It Yourself
 
@@ -284,11 +286,13 @@ cast send 0xaAdc1327a66D992F3d8E6fBa57F6BE7e810d80DE "executeRebalance(bytes,byt
 
 - 💰 **$0.02 per verification** (795,738 gas) for N time periods
 - ⚡ **20ms on-chain verification** (single call)
-- 🔒 **100% privacy preserved** (zero-knowledge)
-- 🚀 **Production ready** (34/34 tests passing)
+- 🔒 **Zero-knowledge** - Constraints verified without revealing values
+- ✅ **All tests passing** (34/34 tests)
 - 📊 **Real contracts** deployed on Arc testnet
 - 🎨 **Interactive demo** for Arc developers
 - ✨ **True Nova folding** - All constraints verified in one proof
+
+**Note**: This demo proves constraint satisfaction on prover-supplied inputs. See [Production Considerations](docs/PRODUCTION_CONSIDERATIONS.md) for data binding requirements.
 
 See [COMPOSITE_CIRCUIT_EXPLAINED.md](COMPOSITE_CIRCUIT_EXPLAINED.md) for complete architecture documentation.
 
@@ -369,25 +373,42 @@ forge script script/DeployFundManager.s.sol:DeployFundManager \
   --legacy
 ```
 
-## ⚠️ Production Considerations
+## ⚠️ Limitations & Production Considerations
 
-**This system uses real cryptographic proofs and is production-ready from a technical standpoint.**
+### What This Demo Proves
 
-Current status:
-- ✅ Real Nova proofs (Sonobe v0.1.0)
+This demo proves: **"Given inputs (balance, total, threshold), the constraint balance/total >= threshold is satisfied."**
+
+It does **NOT** prove:
+- That the balance values correspond to actual on-chain accounts
+- That the prover holds these assets
+- That any third party attested to these values
+
+A malicious prover can generate valid proofs with fabricated inputs.
+
+### What Works
+
+- ✅ Real Nova folding with Groth16 compression (Sonobe v0.1.0)
 - ✅ BN254 curves (EVM-compatible)
-- ✅ Composite circuit with Nova folding
-- ✅ On-chain verification tested
-- ✅ 34/34 tests passing (22 circuits + 12 contracts)
+- ✅ On-chain Solidity verification
+- ✅ Gas-efficient (~795k gas per verification)
+- ✅ All tests passing (34/34)
 
-For production deployment, consider:
+### What's Needed for Production
 
-1. **Security audits** - Smart contracts and ZK circuits
-2. **Legal/regulatory review** - Compliance requirements for your jurisdiction
-3. **Performance optimization** - Proof batching and caching strategies
-4. **Monitoring** - Set up alerts for failed verifications
+To use this system with real value, you must **bind inputs to verifiable data**:
 
-While technically sound, always perform due diligence before production use.
+1. **Storage proofs** - Prove balance exists at specific state root (see [Axiom](https://axiom.xyz), [Herodotus](https://herodotus.dev))
+2. **Oracle attestations** - Have trusted oracle sign balance data
+3. **Commit-and-prove** - Require public commitment before proof
+
+See **[docs/PRODUCTION_CONSIDERATIONS.md](docs/PRODUCTION_CONSIDERATIONS.md)** for detailed implementation guidance.
+
+### Other Production Requirements
+
+- **Security audits** - Smart contracts and ZK circuits
+- **Legal/regulatory review** - Compliance requirements for jurisdiction
+- **Stale data prevention** - Enforce recency of proven state
 
 ## 📄 License
 
@@ -397,4 +418,4 @@ MIT License
 
 **Built for Arc Network 🌐 | Powered by Sonobe (Nova) ⚡ | Privacy-First 🔒**
 
-*First working implementation of composite Nova-based fund compliance with true folding - Production ready! 🚀*
+*Proof-of-concept demonstrating Nova folding for fund compliance. See [Production Considerations](docs/PRODUCTION_CONSIDERATIONS.md) for deployment requirements.*
